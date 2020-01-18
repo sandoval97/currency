@@ -1,0 +1,10 @@
+.root{
+    height: 85vh;
+    margin: 1rem
+}
+.container{
+    width: 60%;
+    position: relative;
+    margin: 2rem auto auto auto;
+    height: 60vh;
+}
