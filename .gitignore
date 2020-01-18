@@ -1,0 +1,10 @@
+*.pyc
+*migrations*
+.vscode/*
+db.sqlite3
+*.pid
+celerybeat-schedule
+*.pyc
+__pycache__
+*.sqlite*
+.env
