@@ -4,13 +4,18 @@ import { Typography } from "@material-ui/core";
 import settings from "../../settings";
 import {Line} from 'react-chartjs-2'
 import {getInformation} from './format_graphic'
+import Converted from './convert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import './style.css';
-import { Chart } from 'react-chartjs-2';
 
-Chart.defaults.global.animation.duration = 3000;
-
-
-const styles = (theme => {})
+const styles = (theme => ({
+    titleConvert:{
+        paddingLeft: theme.spacing(2),
+        textAlign:'left',
+        display: 'block'
+    },
+    
+}));
 class Home extends React.Component {
     constructor(){
         super()
@@ -43,36 +48,50 @@ class Home extends React.Component {
         }
         this.setState({dates: dates,eur: eur,usd:usd})
     }
-
-    
-
-    render(){
-        return (
-            <div className="root">
-                <div className='container'>
-                <Line
+    get_graphic = () =>{
+        return(
+            <Line
                 data = {getInformation(this.state)}
                 width={100}
                 height={100}
                 options={
-                {maintainAspectRatio: false,dynamicDisplay : true,
+                {maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         scaleLabel: {
                             display: true,
                             labelString: 'Valor monetario',
                             fontSize: 20 
-                        },
-                        
+                        }
                     }]            
                 }}}
             />
-                </div>
-                <div className="container">
-                    <Typography variant="h6">
-                        Conversor de moneda
+        )
+    }
+    render(){
+        const classes = this.props.classes
+        return (
+            <div className="root">
+            { this.state.eur.length === 0 ? (
+                <div >
+                    <CircularProgress size={100} color="secondary" />
+                    <Typography variant="h6" >
+                        Cargando..
                     </Typography>
                 </div>
+            ) : (
+                <div>
+                    <div className='container'>
+                        {this.get_graphic()}
+                    </div>
+                    <div className="container">
+                        <Typography variant="h6" className={classes.titleConvert}>
+                            Conversor de monedas
+                        </Typography>
+                        <Converted />
+                    </div>
+               </div>
+            )}
             </div>
         )
     }

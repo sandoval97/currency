@@ -5,6 +5,16 @@
 .container{
     width: 60%;
     position: relative;
-    margin: 2rem auto auto auto;
+    margin: 3rem auto auto auto;
     height: 60vh;
+}
+.height-generic{
+    height: 3.5rem !important;
+}
+.inline{
+    display: inline-flex;
+}
+.load{
+    width:100;
+    height:100
 }
