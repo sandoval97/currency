@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:12.1-alpine
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=user
+      - POSTGRES_DB=cotizacion
+    ports:
+      - "5432:5432"
+
+  broker:
+    image: redis:5.0.7-alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - broker
+    links:
+      - db
+      - broker
+    env_file: .env
+    command: gunicorn -b 0.0.0.0:8000 --reload cotizacion.wsgi:application
+
+  celery_worker:
+    image: currency_api
+    command: celery -A cotizacion worker -l info
+    env_file: .env
+    depends_on:
+      - api
+    links:
+      - db
+      - broker
+      
+  celery_beat:
+    image: currency_api
+    command: celery -A cotizacion beat -l info
+    env_file: .env
+    depends_on:
+      - api
+    links:
+      - db
+      - broker
